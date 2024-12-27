@@ -1,5 +1,5 @@
 {
-  "checksum": "ad84e0341df7e7a0af9b195a8fd07fc16e345736b48a3b81f8f4cb3fb288335d",
+  "checksum": "67abdc0fc4f45988adc85ecb97b433fcadea3d5a6e0ea677297de236eec03f80",
   "crates": {
     "addr2line 0.21.0": {
       "name": "addr2line",
@@ -4034,6 +4034,45 @@
       ],
       "license_file": "LICENSE-APACHE"
     },
+    "env_home 0.1.0": {
+      "name": "env_home",
+      "version": "0.1.0",
+      "package_url": "https://github.com/notpeter/env-home",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/env_home/0.1.0/download",
+          "sha256": "c7f84e12ccf0a7ddc17a6c41c93326024c42920d7ee630d04950e6926645c0fe"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "env_home",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": true,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "env_home",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "edition": "2015",
+        "version": "0.1.0"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
     "env_logger 0.11.5": {
       "name": "env_logger",
       "version": "0.11.5",
@@ -5926,56 +5965,6 @@
         },
         "edition": "2018",
         "version": "0.4.3"
-      },
-      "license": "MIT OR Apache-2.0",
-      "license_ids": [
-        "Apache-2.0",
-        "MIT"
-      ],
-      "license_file": "LICENSE-APACHE"
-    },
-    "home 0.5.9": {
-      "name": "home",
-      "version": "0.5.9",
-      "package_url": "https://github.com/rust-lang/cargo",
-      "repository": {
-        "Http": {
-          "url": "https://static.crates.io/crates/home/0.5.9/download",
-          "sha256": "e3d1354bf6b7235cb4a0576c2619fd4ed18183f689b12b006a0ee7329eeff9a5"
-        }
-      },
-      "targets": [
-        {
-          "Library": {
-            "crate_name": "home",
-            "crate_root": "src/lib.rs",
-            "srcs": {
-              "allow_empty": true,
-              "include": [
-                "**/*.rs"
-              ]
-            }
-          }
-        }
-      ],
-      "library_target_name": "home",
-      "common_attrs": {
-        "compile_data_glob": [
-          "**"
-        ],
-        "deps": {
-          "common": [],
-          "selects": {
-            "cfg(windows)": [
-              {
-                "id": "windows-sys 0.52.0",
-                "target": "windows_sys"
-              }
-            ]
-          }
-        },
-        "edition": "2021",
-        "version": "0.5.9"
       },
       "license": "MIT OR Apache-2.0",
       "license_ids": [
@@ -13534,7 +13523,7 @@
               "target": "walkdir"
             },
             {
-              "id": "which 7.0.0",
+              "id": "which 7.0.1",
               "target": "which"
             },
             {
@@ -18609,14 +18598,14 @@
       ],
       "license_file": "LICENSE"
     },
-    "which 7.0.0": {
+    "which 7.0.1": {
       "name": "which",
-      "version": "7.0.0",
+      "version": "7.0.1",
       "package_url": "https://github.com/harryfei/which-rs.git",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/which/7.0.0/download",
-          "sha256": "c9cad3279ade7346b96e38731a641d7343dd6a53d55083dd54eadfa5a1b38c6b"
+          "url": "https://static.crates.io/crates/which/7.0.1/download",
+          "sha256": "fb4a9e33648339dc1642b0e36e21b3385e6148e289226f657c809dee59df5028"
         }
       },
       "targets": [
@@ -18654,8 +18643,8 @@
             ],
             "cfg(any(windows, unix, target_os = \"redox\"))": [
               {
-                "id": "home 0.5.9",
-                "target": "home"
+                "id": "env_home 0.1.0",
+                "target": "env_home"
               }
             ],
             "cfg(windows)": [
@@ -18667,7 +18656,7 @@
           }
         },
         "edition": "2021",
-        "version": "7.0.0"
+        "version": "7.0.1"
       },
       "license": "MIT",
       "license_ids": [
@@ -19277,7 +19266,6 @@
             "Win32_Storage",
             "Win32_Storage_FileSystem",
             "Win32_System",
-            "Win32_System_Com",
             "Win32_System_Console",
             "Win32_System_IO",
             "Win32_System_Pipes",
@@ -19285,8 +19273,6 @@
             "Win32_System_SystemServices",
             "Win32_System_Threading",
             "Win32_System_WindowsProgramming",
-            "Win32_UI",
-            "Win32_UI_Shell",
             "default"
           ],
           "selects": {}
@@ -22369,7 +22355,7 @@
     "tokio 1.42.0",
     "toml 0.8.19",
     "walkdir 2.5.0",
-    "which 7.0.0",
+    "which 7.0.1",
     "xz2 0.1.7",
     "zip 2.2.1"
   ],

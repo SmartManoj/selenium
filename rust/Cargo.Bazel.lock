@@ -1,5 +1,5 @@
 {
-  "checksum": "ad84e0341df7e7a0af9b195a8fd07fc16e345736b48a3b81f8f4cb3fb288335d",
+  "checksum": "117dd63ecf788a3cc143892e9188a885ac1269d27c1470847e805bd267c5d894",
   "crates": {
     "addr2line 0.21.0": {
       "name": "addr2line",
@@ -13542,7 +13542,7 @@
               "target": "xz2"
             },
             {
-              "id": "zip 2.2.1",
+              "id": "zip 2.2.2",
               "target": "zip"
             }
           ],
@@ -21468,14 +21468,14 @@
       ],
       "license_file": "LICENSE"
     },
-    "zip 2.2.1": {
+    "zip 2.2.2": {
       "name": "zip",
-      "version": "2.2.1",
+      "version": "2.2.2",
       "package_url": "https://github.com/zip-rs/zip2.git",
       "repository": {
         "Http": {
-          "url": "https://static.crates.io/crates/zip/2.2.1/download",
-          "sha256": "99d52293fc86ea7cf13971b3bb81eb21683636e7ae24c729cdaf1b7c4157a352"
+          "url": "https://static.crates.io/crates/zip/2.2.2/download",
+          "sha256": "ae9c1ea7b3a5e1f4b922ff856a129881167511563dc219869afe3787fc0c1a45"
         }
       },
       "targets": [
@@ -21541,7 +21541,7 @@
               "target": "thiserror"
             },
             {
-              "id": "zip 2.2.1",
+              "id": "zip 2.2.2",
               "target": "build_script_build"
             }
           ],
@@ -21570,7 +21570,7 @@
           ],
           "selects": {}
         },
-        "version": "2.2.1"
+        "version": "2.2.2"
       },
       "build_script_attrs": {
         "compile_data_glob": [
@@ -22371,7 +22371,7 @@
     "walkdir 2.5.0",
     "which 7.0.0",
     "xz2 0.1.7",
-    "zip 2.2.1"
+    "zip 2.2.2"
   ],
   "direct_dev_deps": [
     "assert_cmd 2.0.16",

@@ -26,11 +26,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.grid.node.BaseActiveSession;
@@ -44,15 +44,21 @@ import org.openqa.selenium.remote.http.HttpResponse;
 
 public class TestSessionFactory implements SessionFactory {
 
-  private final Capabilities stereotype;
-  private final BiFunction<SessionId, Capabilities, Session> sessionGenerator;
+  public interface SessionGenerator<T, U, R, N> {
+    N apply(T t, U u, R r);
+  }
 
-  public TestSessionFactory(BiFunction<SessionId, Capabilities, Session> sessionGenerator) {
+  private final Capabilities stereotype;
+  private final SessionGenerator<SessionId, NodeId, Capabilities, Session> sessionGenerator;
+
+  public TestSessionFactory(
+      SessionGenerator<SessionId, NodeId, Capabilities, Session> sessionGenerator) {
     this(new ImmutableCapabilities(), sessionGenerator);
   }
 
   public TestSessionFactory(
-      Capabilities stereotype, BiFunction<SessionId, Capabilities, Session> sessionGenerator) {
+      Capabilities stereotype,
+      SessionGenerator<SessionId, NodeId, Capabilities, Session> sessionGenerator) {
     this.stereotype = ImmutableCapabilities.copyOf(stereotype);
     this.sessionGenerator = sessionGenerator;
   }
@@ -63,9 +69,10 @@ public class TestSessionFactory implements SessionFactory {
   }
 
   @Override
-  public Either<WebDriverException, ActiveSession> apply(CreateSessionRequest sessionRequest) {
+  public Either<WebDriverException, ActiveSession> apply(
+      NodeId nodeId, CreateSessionRequest sessionRequest) {
     SessionId id = new SessionId(UUID.randomUUID());
-    Session session = sessionGenerator.apply(id, sessionRequest.getDesiredCapabilities());
+    Session session = sessionGenerator.apply(id, nodeId, sessionRequest.getDesiredCapabilities());
 
     URL url;
     try {
@@ -82,6 +89,7 @@ public class TestSessionFactory implements SessionFactory {
     BaseActiveSession activeSession =
         new BaseActiveSession(
             session.getId(),
+            session.getNodeId(),
             url,
             downstream,
             W3C,

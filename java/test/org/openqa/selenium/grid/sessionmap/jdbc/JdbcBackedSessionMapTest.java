@@ -36,6 +36,7 @@ import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.events.local.GuavaEventBus;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.sessionmap.SessionMap;
 import org.openqa.selenium.remote.SessionId;
@@ -104,6 +105,7 @@ class JdbcBackedSessionMapTest {
     Session expected =
         new Session(
             new SessionId(UUID.randomUUID()),
+            new NodeId(UUID.randomUUID()),
             new URI("http://example.com/foo"),
             new ImmutableCapabilities("foo", "bar"),
             new ImmutableCapabilities("key", "value"),
@@ -124,6 +126,7 @@ class JdbcBackedSessionMapTest {
     Session expected =
         new Session(
             new SessionId(UUID.randomUUID()),
+            new NodeId(UUID.randomUUID()),
             new URI("http://example.com/foo"),
             new ImmutableCapabilities("foo", "bar"),
             new ImmutableCapabilities("key", "value"),

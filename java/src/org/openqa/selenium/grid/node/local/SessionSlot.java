@@ -22,7 +22,7 @@ import java.util.ServiceLoader;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +36,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebDriverInfo;
 import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.SessionClosedEvent;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.grid.node.SessionFactory;
@@ -49,7 +50,7 @@ import org.openqa.selenium.remote.http.HttpResponse;
 
 public class SessionSlot
     implements HttpHandler,
-        Function<CreateSessionRequest, Either<WebDriverException, ActiveSession>>,
+        BiFunction<NodeId, CreateSessionRequest, Either<WebDriverException, ActiveSession>>,
         Predicate<Capabilities> {
 
   private static final Logger LOG = Logger.getLogger(SessionSlot.class.getName());
@@ -136,7 +137,8 @@ public class SessionSlot
   }
 
   @Override
-  public Either<WebDriverException, ActiveSession> apply(CreateSessionRequest sessionRequest) {
+  public Either<WebDriverException, ActiveSession> apply(
+      NodeId nodeId, CreateSessionRequest sessionRequest) {
     if (currentSession != null) {
       return Either.left(new RetrySessionRequestException("Slot is busy. Try another slot."));
     }
@@ -148,7 +150,8 @@ public class SessionSlot
     }
 
     try {
-      Either<WebDriverException, ActiveSession> possibleSession = factory.apply(sessionRequest);
+      Either<WebDriverException, ActiveSession> possibleSession =
+          factory.apply(nodeId, sessionRequest);
       if (possibleSession.isRight()) {
         ActiveSession session = possibleSession.right();
         currentSession = session;

@@ -410,6 +410,7 @@ public class GridModel {
             now,
             new Session(
                 RESERVED,
+                status.getNodeId(),
                 status.getExternalUri(),
                 slot.getStereotype(),
                 slot.getStereotype(),

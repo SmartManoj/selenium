@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.docker.Container;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.node.DefaultActiveSession;
 import org.openqa.selenium.internal.Require;
 import org.openqa.selenium.remote.Dialect;
@@ -47,6 +48,7 @@ public class DockerSession extends DefaultActiveSession {
       Tracer tracer,
       HttpClient client,
       SessionId id,
+      NodeId nodeId,
       URL url,
       Capabilities stereotype,
       Capabilities capabilities,
@@ -54,7 +56,8 @@ public class DockerSession extends DefaultActiveSession {
       Dialect upstream,
       Instant startTime,
       DockerAssetsPath assetsPath) {
-    super(tracer, client, id, url, downstream, upstream, stereotype, capabilities, startTime);
+    super(
+        tracer, client, id, nodeId, url, downstream, upstream, stereotype, capabilities, startTime);
     this.container = Require.nonNull("Container", container);
     this.videoContainer = videoContainer;
     this.assetsPath = Require.nonNull("Assets path", assetsPath);

@@ -17,15 +17,16 @@
 
 package org.openqa.selenium.grid.node;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.internal.Either;
 
 public interface SessionFactory
-    extends Function<CreateSessionRequest, Either<WebDriverException, ActiveSession>>,
+    extends BiFunction<NodeId, CreateSessionRequest, Either<WebDriverException, ActiveSession>>,
         Predicate<Capabilities> {
 
   Capabilities getStereotype();

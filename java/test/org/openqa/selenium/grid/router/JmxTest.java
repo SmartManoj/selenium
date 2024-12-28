@@ -121,9 +121,14 @@ class JmxTest {
               .add(
                   CAPS,
                   new TestSessionFactory(
-                      (id, caps) ->
+                      (id, nodeId, caps) ->
                           new Session(
-                              id, nodeUri, new ImmutableCapabilities(), caps, Instant.now())))
+                              id,
+                              nodeId,
+                              nodeUri,
+                              new ImmutableCapabilities(),
+                              caps,
+                              Instant.now())))
               .build();
 
       assertThat(localNode).isNotNull();
@@ -269,8 +274,9 @@ class JmxTest {
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) ->
-                        new Session(id, nodeUri, new ImmutableCapabilities(), caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(
+                            id, nodeId, nodeUri, new ImmutableCapabilities(), caps, Instant.now())))
             .build();
 
     NewSessionQueue sessionQueue =

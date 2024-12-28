@@ -44,7 +44,8 @@ public class HeartBeatTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .heartbeatPeriod(Duration.ofSeconds(1))
             .build();
 

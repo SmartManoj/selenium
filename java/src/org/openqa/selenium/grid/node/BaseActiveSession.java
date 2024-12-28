@@ -23,6 +23,7 @@ import java.net.URL;
 import java.time.Instant;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ImmutableCapabilities;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.internal.Require;
 import org.openqa.selenium.remote.Dialect;
@@ -36,6 +37,7 @@ public abstract class BaseActiveSession implements ActiveSession {
 
   protected BaseActiveSession(
       SessionId id,
+      NodeId nodeId,
       URL url,
       Dialect downstream,
       Dialect upstream,
@@ -52,6 +54,7 @@ public abstract class BaseActiveSession implements ActiveSession {
     this.session =
         new Session(
             Require.nonNull("Session id", id),
+            nodeId,
             uri,
             ImmutableCapabilities.copyOf(Require.nonNull("Stereotype", stereotype)),
             ImmutableCapabilities.copyOf(Require.nonNull("Capabilities", capabilities)),
@@ -64,6 +67,11 @@ public abstract class BaseActiveSession implements ActiveSession {
   @Override
   public SessionId getId() {
     return session.getId();
+  }
+
+  @Override
+  public NodeId getNodeId() {
+    return session.getNodeId();
   }
 
   @Override

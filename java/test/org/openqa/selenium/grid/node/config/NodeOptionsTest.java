@@ -56,6 +56,7 @@ import org.openqa.selenium.grid.config.MapConfig;
 import org.openqa.selenium.grid.config.TomlConfig;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
 import org.openqa.selenium.grid.data.DefaultSlotMatcher;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.grid.node.SessionFactory;
 import org.openqa.selenium.grid.node.data.YesSlotMatcher;
@@ -781,7 +782,7 @@ class NodeOptionsTest {
 
         @Override
         public Either<WebDriverException, ActiveSession> apply(
-            CreateSessionRequest createSessionRequest) {
+            NodeId nodeId, CreateSessionRequest createSessionRequest) {
           return Either.left(new SessionNotCreatedException("HelperFactory for testing"));
         }
 

@@ -118,13 +118,13 @@ class SessionQueueGridWithTimeoutTest {
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) -> {
+                    (id, nodeId, caps) -> {
                       try {
                         Thread.sleep(6000); // simulate a session that takes long to create
                       } catch (Exception e) {
                       }
                       return new Session(
-                          id, nodeUri, new ImmutableCapabilities(), caps, Instant.now());
+                          id, nodeId, nodeUri, new ImmutableCapabilities(), caps, Instant.now());
                     }))
             .maximumConcurrentSessions(1)
             .build();

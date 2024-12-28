@@ -71,6 +71,14 @@ public class LocalSessionMap extends SessionMap {
               List<SessionId> toRemove =
                   knownSessions.entrySet().stream()
                       .filter((e) -> e.getValue().getUri().equals(nodeStatus.getExternalUri()))
+                      .filter(
+                          (e) -> {
+                            if (e.getValue().getNodeId().equals(nodeStatus.getNodeId())) {
+                              LOG.warning("BUG BUG BUG");
+                              return false;
+                            }
+                            return true;
+                          })
                       .map(Map.Entry::getKey)
                       .collect(Collectors.toList());
 

@@ -56,6 +56,7 @@ import org.openqa.selenium.grid.config.TomlConfig;
 import org.openqa.selenium.grid.data.Availability;
 import org.openqa.selenium.grid.data.CreateSessionResponse;
 import org.openqa.selenium.grid.data.DefaultSlotMatcher;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.NodeStatus;
 import org.openqa.selenium.grid.data.RequestId;
 import org.openqa.selenium.grid.data.Session;
@@ -272,7 +273,8 @@ class SessionCleanUpTest {
             .add(
                 capabilities,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, capabilities, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, capabilities, caps, Instant.now())))
             .heartbeatPeriod(Duration.ofSeconds(500000))
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(availability.get(), "TL;DR"))
@@ -385,15 +387,17 @@ class SessionCleanUpTest {
         throw new RuntimeException(e);
       }
 
-      return new TestSessionFactory(stereotype, (id, caps) -> new SpoofSession(serverUri, caps));
+      return new TestSessionFactory(
+          stereotype, (id, nodeId, caps) -> new SpoofSession(nodeId, serverUri, caps));
     }
   }
 
   private static class SpoofSession extends Session implements HttpHandler {
 
-    private SpoofSession(URI serverUri, Capabilities capabilities) {
+    private SpoofSession(NodeId nodeId, URI serverUri, Capabilities capabilities) {
       super(
           new SessionId(UUID.randomUUID()),
+          nodeId,
           serverUri,
           new ImmutableCapabilities(),
           capabilities,

@@ -62,7 +62,8 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     local =
@@ -106,7 +107,8 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     local =
@@ -159,7 +161,7 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, uri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) -> new Session(id, nodeId, uri, stereotype, c, Instant.now())))
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(DOWN, "Boo!"))
             .build();
@@ -193,7 +195,7 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, uri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) -> new Session(id, nodeId, uri, stereotype, c, Instant.now())))
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(UP, "Yay!"))
             .build();
@@ -231,7 +233,8 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())))
             .advanced()
             .healthCheck(
                 () -> {
@@ -294,7 +297,8 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())))
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(isUp.get(), "TL;DR"))
             .build();
@@ -350,7 +354,8 @@ public class DistributorNodeAvailabilityTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     local =

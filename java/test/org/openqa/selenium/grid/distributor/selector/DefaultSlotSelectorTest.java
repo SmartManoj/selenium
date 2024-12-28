@@ -236,7 +236,6 @@ class DefaultSlotSelectorTest {
 
   private NodeStatus createNode(List<Capabilities> stereotypes, int count, int currentLoad) {
     NodeId nodeId = new NodeId(UUID.randomUUID());
-
     URI uri = createUri();
 
     Set<Slot> slots = new HashSet<>();
@@ -250,7 +249,12 @@ class DefaultSlotSelectorTest {
                     stereotype,
                     now,
                     new Session(
-                        new SessionId(UUID.randomUUID()), uri, stereotype, stereotype, now)));
+                        new SessionId(UUID.randomUUID()),
+                        nodeId,
+                        uri,
+                        stereotype,
+                        stereotype,
+                        now)));
           }
 
           for (int i = 0; i < count - currentLoad; i++) {
@@ -284,7 +288,8 @@ class DefaultSlotSelectorTest {
         .forEach(
             browser -> {
               Capabilities caps = new ImmutableCapabilities("browserName", browser);
-              nodeBuilder.add(caps, new TestSessionFactory((id, c) -> new Handler(c)));
+              nodeBuilder.add(
+                  caps, new TestSessionFactory((id, nodeId, c) -> new Handler(nodeId, c)));
             });
 
     Node myNode = nodeBuilder.build();
@@ -299,7 +304,7 @@ class DefaultSlotSelectorTest {
     stereotypes.forEach(
         stereotype -> {
           Capabilities caps = new ImmutableCapabilities(stereotype);
-          nodeBuilder.add(caps, new TestSessionFactory((id, c) -> new Handler(c)));
+          nodeBuilder.add(caps, new TestSessionFactory((id, nodeId, c) -> new Handler(nodeId, c)));
         });
     Node myNode = nodeBuilder.build();
     return myNode.getStatus();
@@ -314,9 +319,10 @@ class DefaultSlotSelectorTest {
   }
 
   private class Handler extends Session implements HttpHandler {
-    private Handler(Capabilities capabilities) {
+    private Handler(NodeId nodeId, Capabilities capabilities) {
       super(
           new SessionId(UUID.randomUUID()),
+          nodeId,
           uri,
           new ImmutableCapabilities(),
           capabilities,

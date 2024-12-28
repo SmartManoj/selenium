@@ -36,6 +36,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.UUID;
 import java.util.function.Predicate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.internal.Either;
 import org.openqa.selenium.remote.Dialect;
@@ -94,6 +96,7 @@ class DriverServiceSessionFactoryTest {
 
     Either<WebDriverException, ActiveSession> session =
         factory.apply(
+            new NodeId(UUID.randomUUID()),
             new CreateSessionRequest(ImmutableSet.of(), toPayload("chrome"), ImmutableMap.of()));
 
     assertThat(session.isLeft()).isTrue();
@@ -106,6 +109,7 @@ class DriverServiceSessionFactoryTest {
 
     Either<WebDriverException, ActiveSession> session =
         factory.apply(
+            new NodeId(UUID.randomUUID()),
             new CreateSessionRequest(
                 ImmutableSet.of(Dialect.W3C), toPayload("firefox"), ImmutableMap.of()));
 
@@ -121,6 +125,7 @@ class DriverServiceSessionFactoryTest {
 
     Either<WebDriverException, ActiveSession> session =
         factory.apply(
+            new NodeId(UUID.randomUUID()),
             new CreateSessionRequest(
                 ImmutableSet.of(Dialect.W3C), toPayload("chrome"), ImmutableMap.of()));
 
@@ -143,6 +148,7 @@ class DriverServiceSessionFactoryTest {
 
     Either<WebDriverException, ActiveSession> session =
         factory.apply(
+            new NodeId(UUID.randomUUID()),
             new CreateSessionRequest(
                 ImmutableSet.of(Dialect.W3C), toPayload("chrome"), ImmutableMap.of()));
 
@@ -175,6 +181,7 @@ class DriverServiceSessionFactoryTest {
 
     Either<WebDriverException, ActiveSession> session =
         factory.apply(
+            new NodeId(UUID.randomUUID()),
             new CreateSessionRequest(
                 ImmutableSet.of(Dialect.W3C), toPayload("chrome"), ImmutableMap.of()));
 

@@ -39,6 +39,7 @@ import org.openqa.selenium.remote.SessionId;
 public class Session implements Serializable {
 
   private final SessionId id;
+  private final NodeId nodeId;
   private final URI uri;
   private final Capabilities stereotype;
   private final Capabilities capabilities;
@@ -46,11 +47,13 @@ public class Session implements Serializable {
 
   public Session(
       SessionId id,
+      NodeId nodeId,
       URI uri,
       Capabilities stereotype,
       Capabilities capabilities,
       Instant startTime) {
     this.id = Require.nonNull("Session ID", id);
+    this.nodeId = Require.nonNull("Node ID", nodeId);
     this.uri = Require.nonNull("Where the session is running", uri);
     this.startTime = Require.nonNull("Start time", startTime);
 
@@ -61,6 +64,10 @@ public class Session implements Serializable {
 
   public SessionId getId() {
     return id;
+  }
+
+  public NodeId getNodeId() {
+    return nodeId;
   }
 
   public URI getUri() {
@@ -92,6 +99,7 @@ public class Session implements Serializable {
 
   private static Session fromJson(JsonInput input) {
     SessionId id = null;
+    NodeId nodeId = null;
     URI uri = null;
     Capabilities caps = null;
     Capabilities stereotype = null;
@@ -106,6 +114,10 @@ public class Session implements Serializable {
 
         case "sessionId":
           id = input.read(SessionId.class);
+          break;
+
+        case "nodeId":
+          nodeId = input.read(NodeId.class);
           break;
 
         case "start":
@@ -127,7 +139,7 @@ public class Session implements Serializable {
     }
     input.endObject();
 
-    return new Session(id, uri, stereotype, caps, start);
+    return new Session(id, nodeId, uri, stereotype, caps, start);
   }
 
   @Override

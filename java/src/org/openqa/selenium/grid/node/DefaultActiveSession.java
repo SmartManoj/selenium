@@ -23,6 +23,7 @@ import java.io.UncheckedIOException;
 import java.net.URL;
 import java.time.Instant;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.web.ReverseProxyHandler;
 import org.openqa.selenium.internal.Require;
 import org.openqa.selenium.remote.Dialect;
@@ -42,13 +43,14 @@ public class DefaultActiveSession extends BaseActiveSession {
       Tracer tracer,
       HttpClient client,
       SessionId id,
+      NodeId nodeId,
       URL url,
       Dialect downstream,
       Dialect upstream,
       Capabilities stereotype,
       Capabilities capabilities,
       Instant startTime) {
-    super(id, url, downstream, upstream, stereotype, capabilities, startTime);
+    super(id, nodeId, url, downstream, upstream, stereotype, capabilities, startTime);
 
     Require.nonNull("HTTP client", client);
 

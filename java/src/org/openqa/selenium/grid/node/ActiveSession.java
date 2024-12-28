@@ -20,6 +20,7 @@ package org.openqa.selenium.grid.node;
 import java.net.URI;
 import java.time.Instant;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.remote.Dialect;
 import org.openqa.selenium.remote.SessionId;
 import org.openqa.selenium.remote.http.HttpHandler;
@@ -27,6 +28,8 @@ import org.openqa.selenium.remote.http.HttpHandler;
 public interface ActiveSession extends HttpHandler {
 
   SessionId getId();
+
+  NodeId getNodeId();
 
   Capabilities getStereotype();
 

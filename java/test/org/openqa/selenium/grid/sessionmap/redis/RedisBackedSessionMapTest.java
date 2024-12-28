@@ -33,6 +33,7 @@ import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.events.local.GuavaEventBus;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.net.PortProber;
 import org.openqa.selenium.remote.SessionId;
@@ -80,6 +81,7 @@ class RedisBackedSessionMapTest {
     Session expected =
         new Session(
             new SessionId(UUID.randomUUID()),
+            new NodeId(UUID.randomUUID()),
             new URI("http://example.com/foo"),
             new ImmutableCapabilities(),
             new ImmutableCapabilities(),
@@ -96,6 +98,7 @@ class RedisBackedSessionMapTest {
     Session expected =
         new Session(
             new SessionId(UUID.randomUUID()),
+            new NodeId(UUID.randomUUID()),
             new URI("http://example.com/foo"),
             new ImmutableCapabilities(),
             new ImmutableCapabilities("cheese", "beyaz peynir"),
@@ -112,6 +115,7 @@ class RedisBackedSessionMapTest {
     Session expected =
         new Session(
             new SessionId(UUID.randomUUID()),
+            new NodeId(UUID.randomUUID()),
             new URI("http://example.com/foo"),
             new ImmutableCapabilities(),
             new ImmutableCapabilities("cheese", "beyaz peynir"),

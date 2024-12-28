@@ -325,7 +325,7 @@ public class OneShotNode extends Node {
       throw new NoSuchSessionException("Unable to find session with id: " + id);
     }
 
-    return new Session(sessionId, getUri(), stereotype, capabilities, sessionStart);
+    return new Session(sessionId, getId(), getUri(), stereotype, capabilities, sessionStart);
   }
 
   @Override
@@ -404,7 +404,8 @@ public class OneShotNode extends Node {
                 Instant.EPOCH,
                 driver == null
                     ? null
-                    : new Session(sessionId, getUri(), stereotype, capabilities, Instant.now()))),
+                    : new Session(
+                        sessionId, getId(), getUri(), stereotype, capabilities, Instant.now()))),
         isDraining() ? DRAINING : UP,
         heartbeatPeriod,
         getSessionTimeout(),

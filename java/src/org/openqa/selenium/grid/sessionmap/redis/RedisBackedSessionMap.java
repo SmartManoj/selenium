@@ -29,12 +29,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.grid.config.Config;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.NodeRemovedEvent;
 import org.openqa.selenium.grid.data.NodeRestartedEvent;
 import org.openqa.selenium.grid.data.Session;
@@ -87,7 +89,7 @@ public class RedisBackedSessionMap extends SessionMap {
                     .forEach(this::remove)));
 
     bus.addListener(
-        NodeRestartedEvent.listener(nodeStatus -> this.removeByUri(nodeStatus.getExternalUri())));
+        NodeRestartedEvent.listener(nodeStatus -> this.removeByUri(nodeStatus.getNodeId(), nodeStatus.getExternalUri())));
   }
 
   public static SessionMap create(Config config) {
@@ -114,6 +116,8 @@ public class RedisBackedSessionMap extends SessionMap {
       setCommonSpanAttributes(span);
       setCommonEventAttributes(attributeMap);
 
+      String nodeIdKey = nodeIdKey(session.getId());
+      String nodeIdValue = session.getNodeId().toString();
       String uriKey = uriKey(session.getId());
       String uriValue = session.getUri().toString();
       String stereotypeKey = stereotypeKey(session.getId());
@@ -139,6 +143,7 @@ public class RedisBackedSessionMap extends SessionMap {
       span.addEvent("Inserted into the database", attributeMap);
       connection.mset(
           ImmutableMap.of(
+              nodeIdKey, nodeIdValue,
               uriKey, uriValue,
               stereotypeKey, stereotypeJson,
               capabilitiesKey, capabilitiesJson,
@@ -160,6 +165,9 @@ public class RedisBackedSessionMap extends SessionMap {
       setCommonEventAttributes(attributeMap);
       span.setAttribute(DATABASE_OPERATION, "GET");
       attributeMap.put(DATABASE_OPERATION, "GET");
+
+      String nodeIdKey = nodeIdKey(id);
+      NodeId nodeId = new NodeId(UUID.fromString(connection.get(nodeIdKey)));
 
       URI uri = getUri(id);
 
@@ -196,7 +204,7 @@ public class RedisBackedSessionMap extends SessionMap {
       CAPABILITIES_EVENT.accept(attributeMap, caps);
 
       span.addEvent("Retrieved session from the database", attributeMap);
-      return new Session(id, uri, stereotype, caps, start);
+      return new Session(id, nodeId, uri, stereotype, caps, start);
     }
   }
 
@@ -286,7 +294,38 @@ public class RedisBackedSessionMap extends SessionMap {
     }
   }
 
-  public void removeByUri(URI uri) {
+  public void removeByUri(NodeId keep, URI uri) {
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+    //TODO handle keep argument
+
     List<String> uriKeys = connection.getKeysByPattern("session:*:uri");
 
     if (uriKeys.isEmpty()) {
@@ -298,7 +337,7 @@ public class RedisBackedSessionMap extends SessionMap {
 
     List<KeyValue<String, String>> keyValues = connection.mget(keys);
     keyValues.stream()
-        .filter(entry -> entry.getValue().equals(uri.toString()))
+      .filter(entry -> entry.getValue().equals(uri.toString()))
         .map(KeyValue::getKey)
         .map(
             key -> {
@@ -311,6 +350,12 @@ public class RedisBackedSessionMap extends SessionMap {
   @Override
   public boolean isReady() {
     return connection.isOpen();
+  }
+
+  private String nodeIdKey(SessionId id) {
+    Require.nonNull("Session ID", id);
+
+    return "session:" + id + ":nodeId";
   }
 
   private String uriKey(SessionId id) {

@@ -127,7 +127,8 @@ class AddingNodesTest {
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, sessionUri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, sessionUri, stereotype, caps, Instant.now())))
             .build();
 
     Distributor local =
@@ -159,6 +160,7 @@ class AddingNodesTest {
 
   @Test
   void shouldBeAbleToRegisterACustomNode() throws URISyntaxException {
+    NodeId nodeId = new NodeId(UUID.randomUUID());
     URI sessionUri = new URI("http://example:1234");
     Node node =
         new CustomNode(
@@ -168,7 +170,12 @@ class AddingNodesTest {
             Duration.ofSeconds(300),
             c ->
                 new Session(
-                    new SessionId(UUID.randomUUID()), sessionUri, stereotype, c, Instant.now()));
+                    new SessionId(UUID.randomUUID()),
+                    nodeId,
+                    sessionUri,
+                    stereotype,
+                    c,
+                    Instant.now()));
 
     try (LocalDistributor local =
         new LocalDistributor(
@@ -207,7 +214,8 @@ class AddingNodesTest {
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, sessionUri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, sessionUri, stereotype, caps, Instant.now())))
             .build();
 
     try (LocalDistributor local =
@@ -247,14 +255,16 @@ class AddingNodesTest {
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, sessionUri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, sessionUri, stereotype, caps, Instant.now())))
             .build();
     Node secondNode =
         LocalNode.builder(tracer, bus, externalUrl.toURI(), externalUrl.toURI(), registrationSecret)
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, sessionUri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, sessionUri, stereotype, caps, Instant.now())))
             .build();
     handler.addHandler(firstNode);
     handler.addHandler(secondNode);
@@ -298,7 +308,8 @@ class AddingNodesTest {
             .add(
                 CAPS,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, sessionUri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, sessionUri, stereotype, caps, Instant.now())))
             .build();
 
     try (LocalDistributor local =
@@ -342,6 +353,7 @@ class AddingNodesTest {
                       Instant.now(),
                       new Session(
                           new SessionId(UUID.randomUUID()),
+                          new NodeId(UUID.randomUUID()),
                           sessionUri,
                           CAPS,
                           CAPS,
@@ -467,6 +479,7 @@ class AddingNodesTest {
           sess =
               new Session(
                   running.getId(),
+                  new NodeId(UUID.randomUUID()),
                   new URI("http://localhost:14568"),
                   CAPS,
                   running.getCapabilities(),

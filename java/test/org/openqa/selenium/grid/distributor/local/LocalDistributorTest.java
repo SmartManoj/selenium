@@ -54,6 +54,7 @@ import org.openqa.selenium.events.local.GuavaEventBus;
 import org.openqa.selenium.grid.data.CreateSessionResponse;
 import org.openqa.selenium.grid.data.DefaultSlotMatcher;
 import org.openqa.selenium.grid.data.DistributorStatus;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.NodeStatus;
 import org.openqa.selenium.grid.data.RequestId;
 import org.openqa.selenium.grid.data.Session;
@@ -87,6 +88,7 @@ class LocalDistributorTest {
   private static final int newSessionThreadPoolSize = Runtime.getRuntime().availableProcessors();
   private Tracer tracer;
   private EventBus bus;
+  private NodeId nodeId;
   private URI uri;
   private Node localNode;
   private Wait<Object> wait;
@@ -97,10 +99,11 @@ class LocalDistributorTest {
     bus = new GuavaEventBus();
 
     Capabilities caps = new ImmutableCapabilities("browserName", "cheese");
+    nodeId = new NodeId(UUID.randomUUID());
     uri = new URI("http://localhost:1234");
     localNode =
         LocalNode.builder(tracer, bus, uri, uri, registrationSecret)
-            .add(caps, new TestSessionFactory((id, c) -> new Handler(c)))
+            .add(caps, new TestSessionFactory((id, nodeId, c) -> new Handler(c)))
             .maximumConcurrentSessions(2)
             .sessionTimeout(Duration.ofSeconds(30))
             .heartbeatPeriod(Duration.ofSeconds(5))
@@ -239,8 +242,8 @@ class LocalDistributorTest {
     Capabilities caps = new ImmutableCapabilities("browserName", "cheese");
 
     class VerifyingHandler extends Session implements HttpHandler {
-      private VerifyingHandler(SessionId id, Capabilities capabilities) {
-        super(id, uri, new ImmutableCapabilities(), capabilities, Instant.now());
+      private VerifyingHandler(SessionId id, NodeId nodeId, Capabilities capabilities) {
+        super(id, nodeId, uri, new ImmutableCapabilities(), capabilities, Instant.now());
       }
 
       @Override
@@ -430,7 +433,7 @@ class LocalDistributorTest {
                 caps,
                 new TestSessionFactory(
                     caps,
-                    (id, c) -> {
+                    (id, nodeId, c) -> {
                       try {
                         Thread.sleep(delay);
                       } catch (InterruptedException e) {
@@ -492,6 +495,7 @@ class LocalDistributorTest {
     private Handler(Capabilities capabilities) {
       super(
           new SessionId(UUID.randomUUID()),
+          nodeId,
           uri,
           new ImmutableCapabilities(),
           capabilities,

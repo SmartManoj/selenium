@@ -45,6 +45,7 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.devtools.CdpEndpointFinder;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.grid.node.DefaultActiveSession;
 import org.openqa.selenium.grid.node.SessionFactory;
@@ -107,7 +108,8 @@ public class DriverServiceSessionFactory implements SessionFactory {
   }
 
   @Override
-  public Either<WebDriverException, ActiveSession> apply(CreateSessionRequest sessionRequest) {
+  public Either<WebDriverException, ActiveSession> apply(
+      NodeId nodeId, CreateSessionRequest sessionRequest) {
     if (sessionRequest.getDownstreamDialects().isEmpty()) {
       return Either.left(new SessionNotCreatedException("No downstream dialects were found."));
     }
@@ -196,6 +198,7 @@ public class DriverServiceSessionFactory implements SessionFactory {
                 tracer,
                 client,
                 new SessionId(response.getSessionId()),
+                nodeId,
                 service.getUrl(),
                 downstream,
                 upstream,

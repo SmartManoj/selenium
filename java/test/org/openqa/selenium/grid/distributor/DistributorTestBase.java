@@ -40,6 +40,7 @@ import org.openqa.selenium.events.zeromq.ZeroMqEventBus;
 import org.openqa.selenium.grid.data.Availability;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
 import org.openqa.selenium.grid.data.DefaultSlotMatcher;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.NodeStatus;
 import org.openqa.selenium.grid.data.RequestId;
 import org.openqa.selenium.grid.data.Session;
@@ -78,6 +79,7 @@ public abstract class DistributorTestBase {
   protected LocalDistributor local;
   protected Capabilities stereotype;
   protected Capabilities caps;
+  protected NodeId nodeId;
   protected URI nodeUri;
   protected URI routableUri;
   protected LocalSessionMap sessions;
@@ -89,6 +91,7 @@ public abstract class DistributorTestBase {
 
   @BeforeEach
   public void setUp() throws URISyntaxException {
+    nodeId = new NodeId(UUID.randomUUID());
     nodeUri = new URI("http://example:5678");
     routableUri = createUri();
     tracer = DefaultTestTracer.createTracer();
@@ -167,7 +170,9 @@ public abstract class DistributorTestBase {
     URI uri = createUri();
     LocalNode.Builder builder = LocalNode.builder(tracer, bus, uri, uri, registrationSecret);
     for (int i = 0; i < count; i++) {
-      builder.add(stereotype, new TestSessionFactory((id, caps) -> new HandledSession(uri, caps)));
+      builder.add(
+          stereotype,
+          new TestSessionFactory((id, nodeId, caps) -> new HandledSession(nodeId, uri, caps)));
     }
     builder.maximumConcurrentSessions(12);
 
@@ -188,8 +193,8 @@ public abstract class DistributorTestBase {
 
   protected class HandledSession extends Session implements HttpHandler {
 
-    HandledSession(URI uri, Capabilities caps) {
-      super(new SessionId(UUID.randomUUID()), uri, stereotype, caps, Instant.now());
+    HandledSession(NodeId nodeId, URI uri, Capabilities caps) {
+      super(new SessionId(UUID.randomUUID()), nodeId, uri, stereotype, caps, Instant.now());
     }
 
     @Override

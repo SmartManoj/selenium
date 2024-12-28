@@ -146,7 +146,8 @@ class CustomLocatorHandlerTest {
         nodeBuilder
             .add(
                 caps,
-                new TestSessionFactory((id, c) -> new Session(id, nodeUri, caps, c, Instant.now())))
+                new TestSessionFactory(
+                    (id, nodeId, c) -> new Session(id, nodeId, nodeUri, caps, c, Instant.now())))
             .build();
 
     HttpHandler handler =

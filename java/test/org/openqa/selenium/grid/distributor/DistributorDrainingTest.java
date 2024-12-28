@@ -62,7 +62,8 @@ public class DistributorDrainingTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     CountDownLatch latch = new CountDownLatch(1);
@@ -115,11 +116,13 @@ public class DistributorDrainingTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .maximumConcurrentSessions(5)
             .build();
 
@@ -192,7 +195,8 @@ public class DistributorDrainingTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     CountDownLatch latch = new CountDownLatch(1);
@@ -245,7 +249,8 @@ public class DistributorDrainingTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     local =

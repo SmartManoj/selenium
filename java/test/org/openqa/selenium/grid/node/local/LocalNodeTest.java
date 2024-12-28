@@ -46,6 +46,7 @@ import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.events.local.GuavaEventBus;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
 import org.openqa.selenium.grid.data.CreateSessionResponse;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.NodeStatus;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.data.Slot;
@@ -84,7 +85,8 @@ class LocalNodeTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())))
             .build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -200,8 +202,8 @@ class LocalNodeTest {
     Capabilities caps = new ImmutableCapabilities("browserName", "cheese");
 
     class VerifyingHandler extends Session implements HttpHandler {
-      private VerifyingHandler(SessionId id, Capabilities capabilities) {
-        super(id, uri, new ImmutableCapabilities(), capabilities, Instant.now());
+      private VerifyingHandler(SessionId id, NodeId nodeId, Capabilities capabilities) {
+        super(id, nodeId, uri, new ImmutableCapabilities(), capabilities, Instant.now());
       }
 
       @Override
@@ -263,7 +265,7 @@ class LocalNodeTest {
       builder.add(
           stereotype,
           new TestSessionFactory(
-              (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())));
+              (id, nodeId, caps) -> new Session(id, nodeId, uri, stereotype, caps, Instant.now())));
     }
     LocalNode localNode = builder.build();
 
@@ -296,7 +298,8 @@ class LocalNodeTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())));
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())));
     LocalNode localNode = builder.build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -331,7 +334,8 @@ class LocalNodeTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())));
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())));
     LocalNode localNode = builder.build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -364,7 +368,8 @@ class LocalNodeTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())));
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())));
     LocalNode localNode = builder.build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -392,7 +397,8 @@ class LocalNodeTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())));
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())));
     LocalNode localNode = builder.build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -420,7 +426,8 @@ class LocalNodeTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) -> new Session(id, uri, stereotype, caps, Instant.now())));
+                    (id, nodeId, caps) ->
+                        new Session(id, nodeId, uri, stereotype, caps, Instant.now())));
     LocalNode localNode = builder.build();
 
     Either<WebDriverException, CreateSessionResponse> response =

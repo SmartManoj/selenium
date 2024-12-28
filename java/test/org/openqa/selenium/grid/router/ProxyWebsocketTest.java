@@ -51,6 +51,7 @@ import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.events.local.GuavaEventBus;
 import org.openqa.selenium.grid.config.Config;
 import org.openqa.selenium.grid.config.MapConfig;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.server.BaseServerOptions;
 import org.openqa.selenium.grid.server.Server;
@@ -125,6 +126,7 @@ class ProxyWebsocketTest {
     sessions.add(
         new Session(
             id,
+            new NodeId(UUID.randomUUID()),
             backend.getUrl().toURI(),
             new ImmutableCapabilities(),
             new ImmutableCapabilities(),
@@ -160,6 +162,7 @@ class ProxyWebsocketTest {
     sessions.add(
         new Session(
             id,
+            new NodeId(UUID.randomUUID()),
             backend.getUrl().toURI(),
             new ImmutableCapabilities(),
             new ImmutableCapabilities(),
@@ -215,6 +218,7 @@ class ProxyWebsocketTest {
     sessions.add(
         new Session(
             id,
+            new NodeId(UUID.randomUUID()),
             backend.getUrl().toURI(),
             new ImmutableCapabilities(),
             new ImmutableCapabilities(),

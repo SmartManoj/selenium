@@ -106,6 +106,7 @@ class NodeTest {
   private Node node2;
   private ImmutableCapabilities stereotype;
   private ImmutableCapabilities caps;
+  private NodeId nodeId;
   private URI uri;
   private Secret registrationSecret;
 
@@ -128,11 +129,13 @@ class NodeTest {
       caps = new ImmutableCapabilities("browserName", "chrome", "se:downloadsEnabled", true);
     }
 
+    nodeId = new NodeId(UUID.randomUUID());
     uri = new URI("http://localhost:1234");
 
     class Handler extends Session implements HttpHandler {
       private Handler(Capabilities capabilities) {
-        super(new SessionId(UUID.randomUUID()), uri, stereotype, capabilities, Instant.now());
+        super(
+            new SessionId(UUID.randomUUID()), nodeId, uri, stereotype, capabilities, Instant.now());
       }
 
       @Override
@@ -143,9 +146,9 @@ class NodeTest {
 
     Builder builder =
         LocalNode.builder(tracer, bus, uri, uri, registrationSecret)
-            .add(caps, new TestSessionFactory((id, c) -> new Handler(c)))
-            .add(caps, new TestSessionFactory((id, c) -> new Handler(c)))
-            .add(caps, new TestSessionFactory((id, c) -> new Handler(c)))
+            .add(caps, new TestSessionFactory((id, nodeId, c) -> new Handler(c)))
+            .add(caps, new TestSessionFactory((id, nodeId, c) -> new Handler(c)))
+            .add(caps, new TestSessionFactory((id, nodeId, c) -> new Handler(c)))
             .maximumConcurrentSessions(2);
     if (isDownloadsTestCase) {
       builder = builder.enableManagedDownloads(true).sessionTimeout(Duration.ofSeconds(1));
@@ -218,7 +221,7 @@ class NodeTest {
 
                   @Override
                   public Either<WebDriverException, ActiveSession> apply(
-                      CreateSessionRequest createSessionRequest) {
+                      NodeId nodeId, CreateSessionRequest createSessionRequest) {
                     return Either.left(new SessionNotCreatedException("HelperFactory for testing"));
                   }
 
@@ -255,7 +258,7 @@ class NodeTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, uri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) -> new Session(id, nodeId, uri, stereotype, c, Instant.now())))
             .build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -340,7 +343,7 @@ class NodeTest {
     class Recording extends Session implements HttpHandler {
 
       private Recording() {
-        super(new SessionId(UUID.randomUUID()), uri, stereotype, caps, Instant.now());
+        super(new SessionId(UUID.randomUUID()), nodeId, uri, stereotype, caps, Instant.now());
       }
 
       @Override
@@ -352,7 +355,7 @@ class NodeTest {
 
     Node local =
         LocalNode.builder(tracer, bus, uri, uri, registrationSecret)
-            .add(caps, new TestSessionFactory((id, c) -> new Recording()))
+            .add(caps, new TestSessionFactory((id, nodeId, c) -> new Recording()))
             .build();
     Node remote =
         new RemoteNode(
@@ -419,7 +422,7 @@ class NodeTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, uri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) -> new Session(id, nodeId, uri, stereotype, c, Instant.now())))
             .sessionTimeout(Duration.ofMinutes(3))
             .advanced()
             .clock(clock)
@@ -442,7 +445,7 @@ class NodeTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> {
+                    (id, nodeId, c) -> {
                       throw new SessionNotCreatedException("eeek");
                     }))
             .build();
@@ -461,7 +464,8 @@ class NodeTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, sessionUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, sessionUri, stereotype, c, Instant.now())))
             .build();
 
     Either<WebDriverException, CreateSessionResponse> response =

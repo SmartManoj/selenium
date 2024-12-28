@@ -137,9 +137,14 @@ class NewSessionCreationTest {
             .add(
                 Browser.detect().getCapabilities(),
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new Session(
-                            id, uri, Browser.detect().getCapabilities(), caps, Instant.now())))
+                            id,
+                            nodeId,
+                            uri,
+                            Browser.detect().getCapabilities(),
+                            caps,
+                            Instant.now())))
             .build();
     distributor.add(node);
 
@@ -201,12 +206,13 @@ class NewSessionCreationTest {
     // Does not reach second attempt.
     TestSessionFactory sessionFactory =
         new TestSessionFactory(
-            (id, caps) -> {
+            (id, nodeId, caps) -> {
               if (count.get() == 0) {
                 count.incrementAndGet();
                 throw new SessionNotCreatedException("Expected the exception");
               } else {
-                return new Session(id, nodeUri, new ImmutableCapabilities(), caps, Instant.now());
+                return new Session(
+                    id, nodeId, nodeUri, new ImmutableCapabilities(), caps, Instant.now());
               }
             });
 
@@ -273,8 +279,8 @@ class NewSessionCreationTest {
 
     TestSessionFactory sessionFactory =
         new TestSessionFactory(
-            (id, caps) ->
-                new Session(id, nodeUri, new ImmutableCapabilities(), caps, Instant.now()));
+            (id, nodeId, caps) ->
+                new Session(id, nodeId, nodeUri, new ImmutableCapabilities(), caps, Instant.now()));
 
     LocalNode localNode =
         LocalNode.builder(tracer, bus, nodeUri, nodeUri, registrationSecret)

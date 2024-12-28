@@ -70,8 +70,9 @@ class CreateSessionTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) ->
-                        new Session(id, uri, new ImmutableCapabilities(), caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(
+                            id, nodeId, uri, new ImmutableCapabilities(), caps, Instant.now())))
             .build();
 
     Either<WebDriverException, CreateSessionResponse> response =
@@ -126,8 +127,9 @@ class CreateSessionTest {
             .add(
                 stereotype,
                 new TestSessionFactory(
-                    (id, caps) ->
-                        new Session(id, uri, new ImmutableCapabilities(), caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(
+                            id, nodeId, uri, new ImmutableCapabilities(), caps, Instant.now())))
             .build();
 
     Either<WebDriverException, CreateSessionResponse> response =

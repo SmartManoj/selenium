@@ -66,6 +66,7 @@ import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.grid.data.CreateSessionResponse;
 import org.openqa.selenium.grid.data.DefaultSlotMatcher;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.RequestId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.data.SessionRequest;
@@ -188,6 +189,7 @@ class LocalNewSessionQueueTest {
               Session session =
                   new Session(
                       sessionId,
+                      new NodeId(UUID.randomUUID()),
                       URI.create("https://example.com"),
                       CAPS,
                       capabilities,
@@ -235,6 +237,7 @@ class LocalNewSessionQueueTest {
               Session session =
                   new Session(
                       sessionId,
+                      new NodeId(UUID.randomUUID()),
                       URI.create("https://example.com"),
                       CAPS,
                       capabilities,
@@ -280,6 +283,7 @@ class LocalNewSessionQueueTest {
               Session session =
                   new Session(
                       sessionId,
+                      new NodeId(UUID.randomUUID()),
                       URI.create("https://example.com"),
                       CAPS,
                       capabilities,
@@ -391,6 +395,7 @@ class LocalNewSessionQueueTest {
               Session session =
                   new Session(
                       sessionId,
+                      new NodeId(UUID.randomUUID()),
                       URI.create("https://example.com"),
                       CAPS,
                       capabilities,
@@ -553,6 +558,7 @@ class LocalNewSessionQueueTest {
                     Session session =
                         new Session(
                             sessionId,
+                            new NodeId(UUID.randomUUID()),
                             new URI("http://example.com"),
                             CAPS,
                             capabilities,
@@ -606,6 +612,7 @@ class LocalNewSessionQueueTest {
                     Session session =
                         new Session(
                             sessionId,
+                            new NodeId(UUID.randomUUID()),
                             new URI("https://example.com"),
                             CAPS,
                             capabilities,

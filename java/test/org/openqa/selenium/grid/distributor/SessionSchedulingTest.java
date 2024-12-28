@@ -203,7 +203,8 @@ public class SessionSchedulingTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
     local =
         new LocalDistributor(
@@ -338,7 +339,9 @@ public class SessionSchedulingTest extends DistributorTestBase {
       LocalNode.Builder builder = LocalNode.builder(tracer, bus, uri, uri, registrationSecret);
       for (Capabilities caps : capabilities) {
         builder.add(
-            caps, new TestSessionFactory((id, hostCaps) -> new HandledSession(uri, hostCaps)));
+            caps,
+            new TestSessionFactory(
+                (id, nodeId, hostCaps) -> new HandledSession(nodeId, uri, hostCaps)));
       }
       Node node = builder.build();
       handler.addHandler(node);

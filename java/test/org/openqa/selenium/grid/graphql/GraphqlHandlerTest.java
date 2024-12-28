@@ -47,6 +47,7 @@ import org.openqa.selenium.events.local.GuavaEventBus;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
 import org.openqa.selenium.grid.data.CreateSessionResponse;
 import org.openqa.selenium.grid.data.DefaultSlotMatcher;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.RequestId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.data.SessionRequest;
@@ -268,7 +269,7 @@ class GraphqlHandlerTest {
 
                   @Override
                   public Either<WebDriverException, ActiveSession> apply(
-                      CreateSessionRequest createSessionRequest) {
+                      NodeId nodeId, CreateSessionRequest createSessionRequest) {
                     return Either.left(new SessionNotCreatedException("Factory for testing"));
                   }
 
@@ -304,9 +305,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor =
@@ -353,9 +354,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor =
@@ -430,9 +431,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor =
@@ -505,9 +506,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor =
@@ -588,9 +589,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor =
@@ -648,9 +649,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor.add(node);
@@ -687,9 +688,9 @@ class GraphqlHandlerTest {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new org.openqa.selenium.grid.data.Session(
-                            id, nodeUri, stereotype, caps, Instant.now())))
+                            id, nodeId, nodeUri, stereotype, caps, Instant.now())))
             .build();
 
     distributor.add(node);

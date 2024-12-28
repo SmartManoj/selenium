@@ -500,7 +500,8 @@ public class LocalNode extends Node implements Closeable {
                 sessionRequest.getDownstreamDialects(), enhanced, sessionRequest.getMetadata());
       }
 
-      Either<WebDriverException, ActiveSession> possibleSession = slotToUse.apply(sessionRequest);
+      Either<WebDriverException, ActiveSession> possibleSession =
+          slotToUse.apply(this.getId(), sessionRequest);
 
       if (possibleSession.isRight()) {
         ActiveSession session = possibleSession.right();
@@ -931,7 +932,8 @@ public class LocalNode extends Node implements Closeable {
       toUse = new PersistentCapabilities(toUse).setCapability("se:vnc", rewrite(vncPath));
     }
 
-    return new Session(other.getId(), externalUri, other.getStereotype(), toUse, Instant.now());
+    return new Session(
+        other.getId(), this.getId(), externalUri, other.getStereotype(), toUse, Instant.now());
   }
 
   private URI rewrite(String path) {
@@ -960,6 +962,7 @@ public class LocalNode extends Node implements Closeable {
                       session =
                           new Session(
                               activeSession.getId(),
+                              activeSession.getNodeId(),
                               activeSession.getUri(),
                               slot.getStereotype(),
                               activeSession.getCapabilities(),

@@ -200,9 +200,14 @@ class RouterTest {
             .add(
                 chromeCapabilities,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new Session(
-                            id, firstNodeUri, new ImmutableCapabilities(), caps, Instant.now())))
+                            id,
+                            nodeId,
+                            firstNodeUri,
+                            new ImmutableCapabilities(),
+                            caps,
+                            Instant.now())))
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(isUp.get(), "TL;DR"))
             .build();
@@ -212,9 +217,14 @@ class RouterTest {
             .add(
                 firefoxCapabilities,
                 new TestSessionFactory(
-                    (id, caps) ->
+                    (id, nodeId, caps) ->
                         new Session(
-                            id, secondNodeUri, new ImmutableCapabilities(), caps, Instant.now())))
+                            id,
+                            nodeId,
+                            secondNodeUri,
+                            new ImmutableCapabilities(),
+                            caps,
+                            Instant.now())))
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(isUp.get(), "TL;DR"))
             .build();
@@ -249,13 +259,15 @@ class RouterTest {
             .add(
                 chromeCapabilities,
                 new TestSessionFactory(
-                    (id, caps) ->
-                        new Session(id, uri, new ImmutableCapabilities(), caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(
+                            id, nodeId, uri, new ImmutableCapabilities(), caps, Instant.now())))
             .add(
                 firefoxCapabilities,
                 new TestSessionFactory(
-                    (id, caps) ->
-                        new Session(id, uri, new ImmutableCapabilities(), caps, Instant.now())))
+                    (id, nodeId, caps) ->
+                        new Session(
+                            id, nodeId, uri, new ImmutableCapabilities(), caps, Instant.now())))
             .maximumConcurrentSessions(1)
             .advanced()
             .healthCheck(() -> new HealthCheck.Result(isUp.get(), "TL;DR"))
@@ -292,8 +304,8 @@ class RouterTest {
         .add(
             capabilities,
             new TestSessionFactory(
-                (id, caps) ->
-                    new Session(id, uri, new ImmutableCapabilities(), caps, Instant.now())))
+                (id, nodeId, caps) ->
+                    new Session(id, nodeId, uri, new ImmutableCapabilities(), caps, Instant.now())))
         .advanced()
         .healthCheck(() -> new HealthCheck.Result(availability.get(), "TL;DR"))
         .build();

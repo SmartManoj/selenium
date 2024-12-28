@@ -60,6 +60,7 @@ import org.openqa.selenium.docker.Docker;
 import org.openqa.selenium.docker.Image;
 import org.openqa.selenium.docker.Port;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.grid.node.SessionFactory;
 import org.openqa.selenium.internal.Either;
@@ -148,7 +149,8 @@ public class DockerSessionFactory implements SessionFactory {
   }
 
   @Override
-  public Either<WebDriverException, ActiveSession> apply(CreateSessionRequest sessionRequest) {
+  public Either<WebDriverException, ActiveSession> apply(
+      NodeId nodeId, CreateSessionRequest sessionRequest) {
     LOG.info("Starting session for " + sessionRequest.getDesiredCapabilities());
 
     int port = runningInDocker ? 4444 : PortProber.findFreePort();
@@ -262,6 +264,7 @@ public class DockerSessionFactory implements SessionFactory {
               tracer,
               client,
               id,
+              nodeId,
               remoteAddress,
               stereotype,
               mergedCapabilities,

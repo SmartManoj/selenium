@@ -50,6 +50,7 @@ class NodeStatusTest {
                     Instant.EPOCH,
                     new Session(
                         new SessionId(UUID.randomUUID()),
+                        new NodeId(UUID.randomUUID()),
                         new URI("http://localhost:1235"),
                         stereotype,
                         new ImmutableCapabilities("peas", "sausages"),

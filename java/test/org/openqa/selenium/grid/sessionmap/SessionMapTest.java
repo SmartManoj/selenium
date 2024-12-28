@@ -33,6 +33,7 @@ import org.openqa.selenium.ImmutableCapabilities;
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.events.EventBus;
 import org.openqa.selenium.events.local.GuavaEventBus;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.data.Session;
 import org.openqa.selenium.grid.data.SessionClosedEvent;
 import org.openqa.selenium.grid.sessionmap.local.LocalSessionMap;
@@ -52,6 +53,7 @@ import org.openqa.selenium.support.ui.Wait;
 class SessionMapTest {
 
   private SessionId id;
+  private NodeId nodeId;
   private Session expected;
   private SessionMap local;
   private HttpClient client;
@@ -61,9 +63,11 @@ class SessionMapTest {
   @BeforeEach
   public void setUp() throws URISyntaxException {
     id = new SessionId(UUID.randomUUID());
+    nodeId = new NodeId(UUID.randomUUID());
     expected =
         new Session(
             id,
+            nodeId,
             new URI("http://localhost:1234"),
             new ImmutableCapabilities(),
             new ImmutableCapabilities(),

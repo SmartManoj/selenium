@@ -44,6 +44,7 @@ import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.grid.data.CreateSessionRequest;
+import org.openqa.selenium.grid.data.NodeId;
 import org.openqa.selenium.grid.node.ActiveSession;
 import org.openqa.selenium.grid.node.DefaultActiveSession;
 import org.openqa.selenium.grid.node.SessionFactory;
@@ -141,7 +142,8 @@ public class RelaySessionFactory implements SessionFactory {
   }
 
   @Override
-  public Either<WebDriverException, ActiveSession> apply(CreateSessionRequest sessionRequest) {
+  public Either<WebDriverException, ActiveSession> apply(
+      NodeId nodeId, CreateSessionRequest sessionRequest) {
     Capabilities capabilities = sessionRequest.getDesiredCapabilities();
     if (!test(capabilities)) {
       return Either.left(
@@ -200,6 +202,7 @@ public class RelaySessionFactory implements SessionFactory {
                 tracer,
                 client,
                 new SessionId(response.getSessionId()),
+                nodeId,
                 serviceUrl,
                 downstream,
                 upstream,

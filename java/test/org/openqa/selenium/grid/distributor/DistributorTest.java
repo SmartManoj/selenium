@@ -93,7 +93,8 @@ class DistributorTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     local =
@@ -144,7 +145,8 @@ class DistributorTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, c) -> new Session(id, nodeUri, stereotype, c, Instant.now())))
+                    (id, nodeId, c) ->
+                        new Session(id, nodeId, nodeUri, stereotype, c, Instant.now())))
             .build();
 
     local =
@@ -255,7 +257,7 @@ class DistributorTest extends DistributorTestBase {
             .add(
                 caps,
                 new TestSessionFactory(
-                    (id, caps) -> {
+                    (id, nodeId, caps) -> {
                       throw new SessionNotCreatedException("OMG");
                     }))
             .build();
@@ -291,7 +293,7 @@ class DistributorTest extends DistributorTestBase {
             stereotype,
             new TestSessionFactory(
                 stereotype,
-                (id, caps) -> {
+                (id, nodeId, caps) -> {
                   throw new SessionNotCreatedException("Surprise!");
                 }))
         .build();

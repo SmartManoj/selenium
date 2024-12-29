@@ -18,7 +18,6 @@
 from typing import Any
 from typing import Dict
 from typing import Type
-import os
 
 from selenium.common.exceptions import DetachedShadowRootException
 from selenium.common.exceptions import ElementClickInterceptedException
@@ -142,12 +141,6 @@ class ErrorCode:
 class ErrorHandler:
     """Handles errors returned by the WebDriver server."""
 
-    def filter_stacktrace(self, stacktrace):
-        """Filters out 'Backtrace' information from the stacktrace."""
-        if stacktrace:
-            return [line for line in stacktrace if 'Backtrace' not in line]
-        return stacktrace
-
     def check_response(self, response: Dict[str, Any]) -> None:
         """Checks that a JSON response from the WebDriver does not have an
         error.
@@ -229,8 +222,6 @@ class ErrorHandler:
                         stacktrace.append(msg)
                 except TypeError:
                     pass
-        if not os.getenv("INCLUDE_STACKTRACE"):
-            stacktrace = self.filter_stacktrace(stacktrace)
         if exception_class == UnexpectedAlertPresentException:
             alert_text = None
             if "data" in value:

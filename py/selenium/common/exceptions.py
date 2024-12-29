@@ -18,6 +18,7 @@
 
 from typing import Optional
 from typing import Sequence
+import os
 
 SUPPORT_MSG = "For documentation on this error, please visit:"
 ERROR_URL = "https://www.selenium.dev/documentation/webdriver/troubleshooting/errors"
@@ -38,7 +39,7 @@ class WebDriverException(Exception):
         exception_msg = f"Message: {self.msg}\n"
         if self.screen:
             exception_msg += "Screenshot: available via screen\n"
-        if self.stacktrace:
+        if self.stacktrace and os.getenv("INCLUDE_STACKTRACE"):
             stacktrace = "\n".join(self.stacktrace)
             exception_msg += f"Stacktrace:\n{stacktrace}"
         return exception_msg
